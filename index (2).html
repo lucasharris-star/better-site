@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perps Trader - Mobile Perpetual Trading</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --green: #22c55e;
+            --gray-dark: #111111;
+            --gray-mid: #1a1a1a;
+            --gray-light: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-cta {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--white);
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 140px 40px 80px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 10vw, 100px);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--gray-light);
+            max-width: 500px;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .hero-cta .btn {
+            padding: 16px 32px;
+            font-size: 16px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Feature Sections */
+        .feature-section {
+            padding: 100px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 100px;
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 700px;
+        }
+
+        .feature-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .feature-content {
+            max-width: 450px;
+            flex-shrink: 0;
+        }
+
+        .feature-section.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .feature-label {
+            display: inline-block;
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .feature-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+        }
+
+        .feature-content p {
+            color: var(--gray-light);
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: var(--white);
+        }
+
+        .feature-list li svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        .phone-mockup {
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+            flex-shrink: 0;
+        }
+
+        .phone-frame {
+            width: 300px;
+            height: 620px;
+            background: #1a1a1a;
+            border-radius: 44px;
+            padding: 6px;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.05);
+            transform: rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-section.reverse .phone-frame {
+            transform: rotateY(5deg) rotateX(2deg);
+        }
+
+        .phone-frame:hover {
+            transform: rotateY(-3deg) rotateX(1deg);
+        }
+
+        .feature-section.reverse .phone-frame:hover {
+            transform: rotateY(3deg) rotateX(1deg);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 40px;
+            overflow: hidden;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mock-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mock-asset {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .mock-price {
+            color: var(--green);
+            font-size: 14px;
+        }
+
+        .mock-chart {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mock-chart svg {
+            width: 100%;
+            height: 120px;
+            color: var(--green);
+        }
+
+        .mock-actions {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .mock-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .mock-btn.long {
+            background: var(--green);
+            color: var(--black);
+        }
+
+        .mock-btn.short {
+            background: #ef4444;
+            color: var(--white);
+        }
+
+        /* How to Access Section */
+        .how-to {
+            padding: 120px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .how-to h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 400;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .how-to > p {
+            color: var(--gray-light);
+            font-size: 18px;
+            margin-bottom: 60px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gray-mid);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: var(--gray-light);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 120px 40px;
+            background: var(--gray-dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .stat-item p {
+            color: var(--gray-light);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-subtext {
+            text-align: center;
+            color: var(--gray-light);
+            font-size: 16px;
+            margin-top: 40px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 160px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 400;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .cta p {
+            color: var(--gray-light);
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .cta .btn {
+            padding: 20px 48px;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer p {
+            color: var(--gray-light);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .feature-section {
+                flex-direction: column;
+                padding: 80px 40px;
+                gap: 60px;
+                min-height: auto;
+            }
+
+            .feature-section.reverse {
+                flex-direction: column;
+            }
+
+            .feature-content {
+                text-align: center;
+                max-width: 600px;
+            }
+
+            .feature-list {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 24px 60px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .phone-frame {
+                width: 260px;
+                height: 540px;
+                transform: none;
+            }
+
+            .feature-section.reverse .phone-frame {
+                transform: none;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .stat-item h3 {
+                font-size: 40px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Perps Trader</div>
+        <div class="nav-links">
+            <a href="https://x.com/cryptominiapps" target="_blank">X / Twitter</a>
+        </div>
+        <div class="nav-cta">
+            <a href="https://world.org/mini-app?app_id=app_97ed94fe7f6c9006d2d307849c8189f1&path=/" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Trade perpetuals,<br><em>anywhere.</em></h1>
+        <p>The simple way to speculate. No options chains, no expiration dates - just pick a direction and trade.</p>
+        <div class="hero-cta">
+            <a href="https://world.org/mini-app?app_id=app_97ed94fe7f6c9006d2d307849c8189f1&path=/" class="btn btn-primary">Start Trading</a>
+            <a href="https://x.com/cryptominiapps" class="btn btn-outline" target="_blank">Follow on X</a>
+        </div>
+    </section>
+
+    <section class="feature-section" id="size">
+        <div class="feature-content">
+            <span class="feature-label">Simpler than options</span>
+            <h2>A better way to speculate</h2>
+            <p>Forget options and futures. No time decay, no expiration dates, no greeks to calculate. Perpetuals let you take leveraged positions with one simple input: direction and size.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Up to 1000x leverage
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    No expiration dates
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Trade 24/7, even weekends
+                </li>
+            </ul>
+        </div>
+        <div class="phone-mockup">
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="mock-header">
+                        <span class="mock-asset">AAPL</span>
+                        <span class="mock-price">+2.34%</span>
+                    </div>
+                    <div class="mock-chart">
+                        <svg viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M0 60 Q 30 55, 50 40 T 100 35 T 150 20 T 200 15"></path>
+                        </svg>
+                    </div>
+                    <div class="mock-actions">
+                        <div class="mock-btn long">Long</div>
+                        <div class="mock-btn short">Short</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-section reverse" id="short">
+        <div class="feature-content">
+            <span class="feature-label">Profit in any market</span>
+            <h2>Go long or short</h2>
+            <p>Think a stock is overvalued? Short it. Bullish on crypto? Go long. Perps Trader gives you the flexibility to profit whether markets go up or down.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Stocks, crypto, commodities, forex
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Instant execution
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Low fees, tight spreads
+                </li>
+            </ul>
+        </div>
+        <div class="phone-mockup">
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="mock-header">
+                        <span class="mock-asset">BTC/USD</span>
+                        <span class="mock-price" style="color: #ef4444;">-1.82%</span>
+                    </div>
+                    <div class="mock-chart">
+                        <svg viewBox="0 0 200 80" fill="none" stroke="#ef4444" stroke-width="2">
+                            <path d="M0 20 Q 30 25, 50 35 T 100 50 T 150 55 T 200 65"></path>
+                        </svg>
+                    </div>
+                    <div class="mock-actions">
+                        <div class="mock-btn long">Long</div>
+                        <div class="mock-btn short">Short</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-to">
+        <h2>How to get started</h2>
+        <p>Perps Trader runs inside the World App - here is how to access it.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Download World App</h3>
+                <p>Get the World App on iOS or Android. It is your gateway to the Worldcoin ecosystem.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Find Perps Trader</h3>
+                <p>Open the app store inside World App and search for Perps Trader to install.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Fund and Trade</h3>
+                <p>Deposit USDC or WLD on Worldchain to your account and start trading instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>$2.2M+</h3>
+                <p>Total Volume</p>
+            </div>
+            <div class="stat-item">
+                <h3>0.14%</h3>
+                <p>Fee Per Trade</p>
+            </div>
+            <div class="stat-item">
+                <h3>100s</h3>
+                <p>Tradable Assets</p>
+            </div>
+            <div class="stat-item">
+                <h3>4+</h3>
+                <p>Asset Categories</p>
+            </div>
+        </div>
+        <p class="stats-subtext">Trade stocks, commodities, crypto, and more</p>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to trade?</h2>
+        <p>Join thousands of traders using Perps Trader every day.</p>
+        <a href="https://world.org/mini-app?app_id=app_97ed94fe7f6c9006d2d307849c8189f1&path=/" class="btn btn-primary">Launch App</a>
+    </section>
+
+    <footer>
+        <p>2026 Perps Trader. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="https://x.com/cryptominiapps" target="_blank">X</a>
+        </div>
+    </footer>
+</body>
+</html>
